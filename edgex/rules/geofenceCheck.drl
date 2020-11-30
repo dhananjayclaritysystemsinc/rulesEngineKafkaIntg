@@ -1,0 +1,14 @@
+package org.edgexfoundry.rules;
+global org.edgexfoundry.engine.CommandExecutor executor;
+global org.edgexfoundry.support.logging.client.EdgeXLogger logger;
+import org.edgexfoundry.rule.domain.CommonEventData;
+import java.util.Map;
+
+rule "geofenceCheck1"
+when
+  $e:CommonEventData(getCounterCount() >= 10);
+
+then
+executor.storeEvent($e);
+logger.info("Counterfiet detected due to CounterCount rule for product %s",$e.readContext.read("$['epcisBody'].['eventList'].[0]['parentID']"));
+end
